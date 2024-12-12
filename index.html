@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Better Call Shawn - Your Smart Life Assistant</title>
+    <script src="i18n.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            background: #FFD700;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .banner {
+            padding: 40px 20px;
+            text-align: center;
+            flex: 1;
+            background: linear-gradient(180deg, #FFD700 0%, #FFA500 100%);
+        }
+        
+        .logo {
+            width: 400px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        .logo img {
+            width: 100%;
+            height: auto;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
+        }
+        
+        .title {
+            font-size: 4em;
+            color: #000;
+            text-shadow: 2px 2px 0 #fff;
+            margin: 20px 0;
+            font-family: 'Impact', sans-serif;
+        }
+        
+        .subtitle {
+            font-size: 2em;
+            color: #000;
+            margin: 10px 0 30px;
+            font-family: 'Arial Black', sans-serif;
+            text-transform: uppercase;
+        }
+        
+        .contact-section {
+            background: #FF4136;
+            padding: 30px;
+            margin-top: 40px;
+            text-align: center;
+            box-shadow: 0 -4px 12px rgba(0,0,0,0.1);
+        }
+        
+        .phone-number {
+            font-size: 3em;
+            color: #fff;
+            font-weight: bold;
+            text-shadow: 2px 2px 0 #000;
+            margin: 10px 0;
+            cursor: pointer;
+            font-family: 'Impact', sans-serif;
+        }
+        
+        .contact-button {
+            font-size: 2.5em;
+            color: #fff;
+            background: #D32F2F;
+            padding: 15px 40px;
+            border-radius: 50px;
+            display: inline-block;
+            margin-top: 20px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            display: none;
+        }
+        
+        .contact-button:hover {
+            background: #B71C1C;
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+        
+        .language-switch {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+        
+        .lang-menu-btn {
+            width: 40px;
+            height: 40px;
+            border: 2px solid #fff;
+            background: transparent;
+            color: #fff;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+        
+        .lang-menu-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .lang-options {
+            position: absolute;
+            top: 50px;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        .lang-options.show {
+            display: flex;
+        }
+        
+        .lang-btn {
+            padding: 10px 20px;
+            border: none;
+            background: transparent;
+            color: #D32F2F;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 16px;
+            text-align: left;
+            white-space: nowrap;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+        }
+        
+        .lang-btn:last-child {
+            border-bottom: none;
+        }
+        
+        .lang-btn:hover {
+            background: #D32F2F;
+            color: #fff;
+        }
+        
+        .lang-btn.active {
+            background: #B71C1C;
+            color: #fff;
+        }
+
+        @media (max-width: 768px) {
+            .logo {
+                width: 280px;
+                margin-bottom: 15px;
+            }
+            .title {
+                font-size: 2.5em;
+            }
+            .subtitle {
+                font-size: 1.5em;
+            }
+            .phone-number {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="banner">
+        <div class="language-switch">
+            <button class="lang-menu-btn">🌐</button>
+            <div class="lang-options">
+                <button onclick="switchLanguage('en')" class="lang-btn" data-lang="en">English</button>
+                <button onclick="switchLanguage('zh')" class="lang-btn" data-lang="zh">Chinese</button>
+                <button onclick="switchLanguage('es')" class="lang-btn" data-lang="es">Español</button>
+            </div>
+        </div>
+        <div class="logo">
+            <img src="public/logo.png?t=1" alt="Better Call Shawn">
+        </div>
+        <h1 class="title" data-i18n="title">Better Call Shawn</h1>
+        <h2 class="subtitle" data-i18n="subtitle">Assistant at Service</h2>
+        
+        <div class="contact-section">
+            <div class="phone-number">
+                (650) 880-6414
+            </div>
+            <a href="tel:6508806414" class="contact-button" data-i18n="contact">Call Now</a>
+        </div>
+    </div>
+    <script>
+        // Language menu control
+        const menuBtn = document.querySelector('.lang-menu-btn');
+        const langOptions = document.querySelector('.lang-options');
+        
+        menuBtn.addEventListener('click', () => {
+            langOptions.classList.toggle('show');
+        });
+        
+        // Close language menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.language-switch')) {
+                langOptions.classList.remove('show');
+            }
+        });
+        
+        // Update language switching logic
+        function switchLanguage(lang) {
+            document.querySelectorAll('[data-i18n]').forEach(element => {
+                const key = element.getAttribute('data-i18n');
+                element.textContent = translations[lang][key];
+            });
+            
+            // Update button active state
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                if (btn.getAttribute('data-lang') === lang) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+            
+            // Close menu
+            document.querySelector('.lang-options').classList.remove('show');
+        }
+        
+        // Set initial language based on user's browser settings
+        const userLang = navigator.language || navigator.userLanguage;
+        let currentLang = 'en';
+        if (userLang.startsWith('zh')) {
+            currentLang = 'zh';
+        } else if (userLang.startsWith('es')) {
+            currentLang = 'es';
+        }
+        switchLanguage(currentLang);
+    </script>
+</body>
+</html>
